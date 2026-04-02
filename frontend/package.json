@@ -20,6 +20,7 @@
     "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.9.0",
     "clsx": "^2.1.1",
+    "cookie-parser": "^1.4.7",
     "flowbite": "^4.0.1",
     "flowbite-react": "^0.12.16",
     "framer-motion": "^12.34.0",
