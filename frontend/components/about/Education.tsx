@@ -1,5 +1,6 @@
 "use client";
 
+// Lottie animation for education section
 import Lottie from "lottie-react";
 import readingBook from "../../lib/lottie/learning.js";
 
@@ -25,7 +26,6 @@ export function Education() {
               year: "2021 – 2022",
               desc: "PCM Background",
             },
-  
           ].map((item, i) => (
             <div
               key={i}
