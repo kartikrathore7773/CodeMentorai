@@ -22,7 +22,7 @@ export default function AppNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const role = user?.role;
 
   const [accountOpen, setAccountOpen] = useState(false);
@@ -116,7 +116,7 @@ export default function AppNavbar() {
             style={{ display: "none", alignItems: "center", gap: "12px" }}
             className="desktop-right"
           >
-            {!role ? (
+            {!user && !loading ? (
               <>
                 <Link href="/auth/login" style={{ textDecoration: "none" }}>
                   <button className="btn-login cursor-pointer">Login</button>
@@ -164,7 +164,9 @@ export default function AppNavbar() {
                       minWidth: "180px",
                     }}
                   >
-                    <NavItem href={role === "admin" ? "/admin" : "/dashboard"}>
+                    <NavItem
+                      href={user?.role === "admin" ? "/admin" : "/dashboard"}
+                    >
                       Dashboard
                     </NavItem>
                     <NavItem href="/profile">Profile</NavItem>
@@ -198,22 +200,19 @@ export default function AppNavbar() {
                         padding: "11px 18px",
                         fontSize: "0.875rem",
                         color: "#ef4444",
-                        background: "none",
                         border: "none",
+                        background: "none",
                         cursor: "pointer",
-                        transition: "background 0.15s",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
+                        borderRadius: "6px",
                       }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.background = "#fef2f2")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.background = "none")
-                      }
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = "#fef2f2";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "none";
+                      }}
                     >
-                      <span style={{ fontSize: "16px" }}>👋</span> Logout
+                      Logout
                     </button>
                   </div>
                 )}

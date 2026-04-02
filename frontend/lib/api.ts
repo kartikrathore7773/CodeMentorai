@@ -1,12 +1,23 @@
 export async function apiFetch(path: string, opts: RequestInit = {}) {
-  const base = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+  const baseUrlRaw = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000";
+  const base = baseUrlRaw.replace(/\/$/, "");
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    ...(opts.headers || {}),
+  };
+
+  // Add token if available
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+  }
+
   const merged: RequestInit = {
     ...opts,
     credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-      ...(opts.headers || {}),
-    },
+    headers,
   };
 
   const res = await fetch(base + path, merged);
