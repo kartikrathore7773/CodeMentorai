@@ -42,6 +42,7 @@ app.use(
       "http://10.100.125.51:3003",
       "http://localhost:3000",
       "http://localhost:3001",
+      "https://codementorai-six.vercel.app",
     ],
     credentials: true,
   }),
