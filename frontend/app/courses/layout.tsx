@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     "software job preparation",
     "CodeMentor AI",
     "Referrals",
-    "CodeWithSuraj",
+    "CodeWithkartik",
   ],
 
   openGraph: {

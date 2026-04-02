@@ -884,7 +884,7 @@ export function CodeMentorAI() {
                 <BucketCard
                   icon="🧑‍🏫"
                   title="1-on-1 Mentorship"
-                  desc="Personalized mentorship sessions with Suraj — covering career guidance, code review, mock interviews, and project feedback."
+                  desc="Personalized mentorship sessions with kartik — covering career guidance, code review, mock interviews, and project feedback."
                   tags={["Career", "Code Review", "Interviews"]}
                   gradient="from-violet-500 to-fuchsia-500"
                   delay={0}

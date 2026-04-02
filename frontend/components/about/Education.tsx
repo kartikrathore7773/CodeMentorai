@@ -1,7 +1,7 @@
 "use client";
 
 import Lottie from "lottie-react";
-import readingBook from "@/public/lottie/learning.json";
+import readingBook from "@/lib/lottie/learning.json";
 
 export function Education() {
   return (
@@ -16,20 +16,16 @@ export function Education() {
         <div className="space-y-6">
           {[
             {
-              title: "B.Tech in Mechanical Engineering",
-              year: "2021 – 2025",
-              desc: "NIT Allahabad",
+              title: "B.Tech in Computer Science and Engineering",
+              year: "2022 – 2026",
+              desc: "Vit Jaipur",
             },
             {
-              title: "Class 12th (CBSE)",
-              year: "2020 – 2021",
+              title: "Class 12th (RBSE)",
+              year: "2021 – 2022",
               desc: "PCM Background",
             },
-            {
-              title: "GATE CSE",
-              year: "AIR 823",
-              desc: "All India Rank",
-            },
+  
           ].map((item, i) => (
             <div
               key={i}
