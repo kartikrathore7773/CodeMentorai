@@ -14,9 +14,12 @@ export const sendEmail = async ({ to, subject, html }) => {
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: { user, pass },
-        // Additional Gmail-specific settings
+        // Additional Gmail-specific settings for better deliverability
         secure: true, // use SSL
         port: 465, // Gmail SSL port
+        tls: {
+          rejectUnauthorized: false, // Sometimes needed for cloud deployments
+        },
       });
 
       const info = await transporter.sendMail({
@@ -24,16 +27,29 @@ export const sendEmail = async ({ to, subject, html }) => {
         to,
         subject,
         html,
+        // Add headers for better deliverability
+        headers: {
+          "X-Mailer": "CodeMentor AI Mailer",
+          "Return-Path": user,
+          "Reply-To": user,
+        },
       });
 
       console.log("sendEmail: successfully sent via Gmail");
+      console.log("Message ID:", info.messageId);
       return info;
     } catch (err) {
-      // Log and fall through to test account
-      console.error(
-        "sendEmail: Gmail SMTP failed, falling back to Ethereal. Error:",
-        err,
-      );
+      console.error("sendEmail: Gmail SMTP failed, error details:", {
+        message: err.message,
+        code: err.code,
+        command: err.command,
+        response: err.response,
+      });
+
+      // If Gmail fails, don't fall back to Ethereal in production
+      if (process.env.NODE_ENV === "production") {
+        throw new Error(`Email sending failed: ${err.message}`);
+      }
     }
   }
 

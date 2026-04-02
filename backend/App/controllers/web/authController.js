@@ -85,8 +85,12 @@ export const signup = async (req, res) => {
     // 📧 EMAIL BACKGROUND ME BHEJO
     try {
       const verifyUrl = `${process.env.CLIENT_URL}/auth/verify-email/${emailVerifyToken}`;
+      console.log("📧 Sending verification email to:", user.email);
+      console.log("📧 Verification URL:", verifyUrl);
 
       await sendEmail({
+        to: user.email,
+        subject: "Verify your email - CodeMentor AI",
         to: user.email,
         subject: "Verify your email - CodeMentor AI",
         html: `
@@ -172,8 +176,11 @@ export const signup = async (req, res) => {
   </div>
   `,
       });
+      console.log("✅ Verification email sent successfully to:", user.email);
     } catch (emailError) {
-      console.error("EMAIL ERROR 👉", emailError.message);
+      console.error("❌ EMAIL ERROR during signup 👉", emailError.message);
+      console.error("❌ Full email error:", emailError);
+      // Don't fail signup if email fails, but log it
     }
   } catch (error) {
     console.error(
