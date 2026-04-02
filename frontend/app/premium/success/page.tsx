@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
 import { CheckCircle, XCircle } from "lucide-react";
 import Link from "next/link";
 
-export default function CashfreeSuccessPage() {
+function CashfreeSuccessContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get("order_id");
   const [loading, setLoading] = useState(true);
@@ -97,5 +97,23 @@ export default function CashfreeSuccessPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function CashfreeSuccessPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex min-h-screen items-center justify-center bg-gray-900 text-white">
+        <div className="w-full max-w-md rounded-xl bg-gray-800 p-8 text-center shadow-lg">
+          <div
+            className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full"
+            role="status"
+          ></div>
+          <h1 className="mt-4 text-xl font-bold">Loading...</h1>
+        </div>
+      </div>
+    }>
+      <CashfreeSuccessContent />
+    </Suspense>
   );
 }
