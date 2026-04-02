@@ -358,14 +358,9 @@ export default function AboutPage() {
   /* ── Original API logic — unchanged ── */
   useEffect(() => {
     axios
-      .get(
-        "https://codewithsuraj-portfolio-backend.onrender.com/api/resume/latest",
-      )
+      .get("https://codementorai-1mjp.onrender.com/api/resume/latest")
       .then((res) => {
-        setResumeLink(
-          "https://codewithsuraj-portfolio-backend.onrender.com" +
-            res.data.path,
-        );
+        setResumeLink("https://codementorai-1mjp.onrender.com" + res.data.path);
       });
   }, []);
 
