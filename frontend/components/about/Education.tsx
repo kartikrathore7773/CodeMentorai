@@ -1,7 +1,7 @@
 "use client";
 
 import Lottie from "lottie-react";
-import readingBook from "../../lib/lottie/learning.json";
+import readingBook from "../../lib/lottie/learning.js";
 
 export function Education() {
   return (
