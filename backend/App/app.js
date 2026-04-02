@@ -47,20 +47,6 @@ app.use(
   }),
 );
 
-// Ensure preflight requests are handled for dev origins
-app.options(
-  "*",
-  cors({
-    origin: [
-      "http://localhost:3003",
-      "http://10.100.125.51:3003",
-      "http://localhost:3000",
-      "http://localhost:3001",
-    ],
-    credentials: true,
-  }),
-);
-
 app.use(cookieParser());
 
 // ❌ GLOBAL body parsers hata do
