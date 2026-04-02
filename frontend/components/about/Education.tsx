@@ -8,9 +8,10 @@ export function Education() {
   const [readingBook, setReadingBook] = useState(null);
 
   useEffect(() => {
-    import("../../lib/lottie/learning.json").then((module) => {
-      setReadingBook(module.default);
-    });
+    fetch("/lottie/learning.json")
+      .then((response) => response.json())
+      .then((data) => setReadingBook(data))
+      .catch((error) => console.error("Error loading lottie:", error));
   }, []);
 
   if (!readingBook) return null;
