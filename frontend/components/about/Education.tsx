@@ -8,7 +8,7 @@ export function Education() {
   const [readingBook, setReadingBook] = useState(null);
 
   useEffect(() => {
-    import("../../lib/lottie/learning.js").then((module) => {
+    import("../../lib/lottie/learning.json").then((module) => {
       setReadingBook(module.default);
     });
   }, []);
