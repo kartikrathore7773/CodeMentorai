@@ -2,7 +2,7 @@
 
 // Lottie animation for education section
 import Lottie from "lottie-react";
-import readingBook from "../../lib/lottie/learning.js";
+const readingBook = require("../../lib/lottie/learning.js").default;
 
 export function Education() {
   return (
