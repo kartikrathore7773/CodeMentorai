@@ -2,9 +2,18 @@
 
 // Lottie animation for education section
 import Lottie from "lottie-react";
-const readingBook = require("../../lib/lottie/learning.js").default;
+import { useEffect, useState } from "react";
 
 export function Education() {
+  const [readingBook, setReadingBook] = useState(null);
+
+  useEffect(() => {
+    import("../../lib/lottie/learning.js").then((module) => {
+      setReadingBook(module.default);
+    });
+  }, []);
+
+  if (!readingBook) return null;
   return (
     <section className="pt-24 px-4 md:px-12">
       <h1 className="text-4xl font-semibold text-center mb-12">
