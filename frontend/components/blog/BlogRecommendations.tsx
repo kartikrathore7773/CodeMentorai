@@ -47,7 +47,7 @@ export default function BlogRecommendations({ blogId, category }: Props) {
         // 1️⃣ Get recommendations
         const { data } = await api.post<RecommendationResponse>(
           "/ai/recommendations",
-          { blogId, category }
+          { blogId, category },
         );
 
         console.log("📦 Recommendation API Response:", data);
@@ -78,7 +78,7 @@ export default function BlogRecommendations({ blogId, category }: Props) {
         }
 
         const blogPromises = validRecs.map((rec) =>
-          api.get<Blog>(`/blogs/${rec.slug}`)
+          api.get<Blog>(`/api/blogs/${rec.slug}`),
         );
 
         const blogResponses = await Promise.all(blogPromises);
@@ -90,7 +90,6 @@ export default function BlogRecommendations({ blogId, category }: Props) {
         console.log("🎯 Final Blogs Set:", fullBlogs);
 
         setBlogs(fullBlogs);
-
       } catch (error) {
         console.error("❌ Recommendation error:", error);
         setBlogs([]);
@@ -150,7 +149,7 @@ export default function BlogRecommendations({ blogId, category }: Props) {
         <div className="flex items-center gap-3">
           {/* GRADIENT ACCENT LINE */}
           <div className="h-1 w-12 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 rounded-full" />
-          
+
           {/* TITLE WITH AI BADGE */}
           <div className="flex items-center gap-3">
             <h2 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-slate-900 via-indigo-800 to-slate-900 bg-clip-text text-transparent">
@@ -158,7 +157,9 @@ export default function BlogRecommendations({ blogId, category }: Props) {
             </h2>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 group">
               <Sparkles className="w-4 h-4 text-indigo-600 group-hover:animate-spin" />
-              <span className="text-xs font-semibold text-indigo-600">AI Powered</span>
+              <span className="text-xs font-semibold text-indigo-600">
+                AI Powered
+              </span>
             </div>
           </div>
         </div>

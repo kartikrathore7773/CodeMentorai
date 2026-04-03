@@ -22,10 +22,10 @@ export default function AdminBlogList() {
 
   const fetchBlogs = async () => {
     try {
-      const res = await api.get("/admin/blogs", {
+      const res = await api.get("/api/admin/blogs", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
-        }
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
 
       setBlogs(res.data);
@@ -42,8 +42,8 @@ export default function AdminBlogList() {
     try {
       await api.delete(`/admin/blogs/${id}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
-        }
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
 
       toast.success("Blog deleted");
@@ -60,9 +60,9 @@ export default function AdminBlogList() {
         {},
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
-        }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
       );
 
       toast.success("Blog published");
@@ -106,9 +106,7 @@ export default function AdminBlogList() {
             >
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                  <h2 className="text-xl font-semibold">
-                    {blog.title}
-                  </h2>
+                  <h2 className="text-xl font-semibold">{blog.title}</h2>
                   <p className="text-sm text-gray-400">
                     {new Date(blog.createdAt).toLocaleDateString()}
                   </p>
@@ -124,9 +122,7 @@ export default function AdminBlogList() {
                   <Button
                     size="xs"
                     color="gray"
-                    onClick={() =>
-                      router.push(`/admin/blogs/edit/${blog._id}`)
-                    }
+                    onClick={() => router.push(`/admin/blogs/edit/${blog._id}`)}
                   >
                     Edit
                   </Button>

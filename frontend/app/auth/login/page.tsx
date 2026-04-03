@@ -72,7 +72,7 @@ export default function LoginPage() {
     setErrors({});
 
     try {
-      const res = await api.post("/auth/login", {
+      const res = await api.post("/api/auth/login", {
         email: form.email.trim(),
         password: form.password,
       });
@@ -159,7 +159,7 @@ export default function LoginPage() {
                 <GoogleLogin
                   onSuccess={async (res) => {
                     try {
-                      const response = await api.post("/auth/google", {
+                      const response = await api.post("/api/auth/google", {
                         token: res.credential,
                       });
 
