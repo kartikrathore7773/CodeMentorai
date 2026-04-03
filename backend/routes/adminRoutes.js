@@ -36,8 +36,13 @@ router.get("/stats", async (req, res) => {
 // Get popular blogs
 router.get("/blogs/popular", async (req, res) => {
   try {
-    // This is a placeholder. You'll need to implement your own logic for "popular" blogs.
-    const blogs = await Blog.find().sort({ score: -1 }).limit(5);
+    // Sort by views count to determine popular blogs
+    const blogs = await Blog.find({ isPublished: true })
+      .sort({ views: -1 })
+      .limit(5)
+      .select(
+        "title slug excerpt coverImage authorName publishedAt views likesCount",
+      );
     res.json(blogs);
   } catch (err) {
     res.status(500).json({ message: err.message });
