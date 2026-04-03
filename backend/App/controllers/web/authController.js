@@ -744,7 +744,12 @@ export const changePassword = async (req, res) => {
 
 export const me = async (req, res) => {
   try {
-    const token = req.cookies.token; // 👈 wahi cookie jo login pe set hoti hai
+    let token = req.cookies.token; // 👈 cookie se check karo
+
+    // If no cookie token, check Authorization header
+    if (!token && req.headers.authorization?.startsWith("Bearer ")) {
+      token = req.headers.authorization.split(" ")[1];
+    }
 
     if (!token) {
       return res.status(401).json({
