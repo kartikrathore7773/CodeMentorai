@@ -181,7 +181,7 @@ export default function AppNavbar() {
                     <button
                       onClick={async () => {
                         try {
-                          await api.post("/auth/logout");
+                          await api.post("/api/auth/logout");
 
                           localStorage.removeItem("token");
                           localStorage.removeItem("role");
