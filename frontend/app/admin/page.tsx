@@ -62,7 +62,7 @@ export default function AdminDashboard() {
 
     try {
       const [blogsRes, statsRes, subsRes] = await Promise.allSettled([
-        api.get("/api/admin/blogs/popular"),
+        api.get("/admin/blogs/popular"),
         api.get("/admin/stats"),
         api.get("/premium/admin/subscriptions"),
       ]);

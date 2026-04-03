@@ -46,7 +46,7 @@ export default function LoginPage() {
 
     const checkAuth = async () => {
       try {
-        const res = await api.get("/api/auth/me");
+        const res = await api.get("/auth/me");
         if (res.data.success) {
           const role = res.data.user.role;
           if (role === "admin") {
@@ -72,7 +72,7 @@ export default function LoginPage() {
     setErrors({});
 
     try {
-      const res = await api.post("/api/auth/login", {
+      const res = await api.post("/auth/login", {
         email: form.email.trim(),
         password: form.password,
       });
@@ -159,7 +159,7 @@ export default function LoginPage() {
                 <GoogleLogin
                   onSuccess={async (res) => {
                     try {
-                      const response = await api.post("/api/auth/google", {
+                      const response = await api.post("/auth/google", {
                         token: res.credential,
                       });
 

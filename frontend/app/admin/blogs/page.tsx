@@ -22,7 +22,7 @@ export default function AdminBlogList() {
 
   const fetchBlogs = async () => {
     try {
-      const res = await api.get("/api/admin/blogs", {
+      const res = await api.get("/admin/blogs", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

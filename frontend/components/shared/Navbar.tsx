@@ -187,7 +187,7 @@ export default function AppNavbar() {
 
                           // Try to call logout API (don't fail if it doesn't work)
                           try {
-                            await api.post("/api/auth/logout");
+                            await api.post("/auth/logout");
                           } catch (apiErr) {
                             console.warn(
                               "Logout API call failed, but proceeding with local logout:",

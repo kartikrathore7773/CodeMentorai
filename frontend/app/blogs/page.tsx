@@ -21,7 +21,7 @@ export default async function BlogsPage() {
   let blogs: Blog[] = [];
 
   try {
-    const { data } = await api.get("/api/blogs");
+    const { data } = await api.get("/blogs");
     blogs = data.blogs || [];
   } catch (err) {
     console.warn("Blogs fetch failed during prerender/build:", err);

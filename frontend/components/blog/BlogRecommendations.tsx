@@ -78,7 +78,7 @@ export default function BlogRecommendations({ blogId, category }: Props) {
         }
 
         const blogPromises = validRecs.map((rec) =>
-          api.get<Blog>(`/api/blogs/${rec.slug}`),
+          api.get<Blog>(`/blogs/${rec.slug}`),
         );
 
         const blogResponses = await Promise.all(blogPromises);

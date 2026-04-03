@@ -40,7 +40,7 @@ export default function BlogDetail() {
     if (!slug) return;
     const fetchBlog = async () => {
       try {
-        const { data } = await api.get(`/api/blogs/${slug}`);
+        const { data } = await api.get(`/blogs/${slug}`);
         setBlog(data);
       } catch (err) {
         console.error("Blog fetch failed", err);

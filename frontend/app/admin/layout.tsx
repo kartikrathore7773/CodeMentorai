@@ -26,7 +26,7 @@ export default function AdminLayout({
           return;
         }
 
-        const res = await api.get("/api/auth/me");
+        const res = await api.get("/auth/me");
 
         console.log("ADMIN AUTH RESPONSE 👉", res.data);
 
