@@ -16,22 +16,47 @@ export default function AdminLayout({
   useEffect(() => {
     const checkAuth = async () => {
       try {
+        // Check localStorage first
+        const token = localStorage.getItem("token");
+        const role = localStorage.getItem("role");
+
+        if (!token || role !== "admin") {
+          console.log("No token or not admin, redirecting to login");
+          router.replace("/auth/login");
+          return;
+        }
+
         const res = await api.get("/api/auth/me");
 
-        console.log("AUTH RESPONSE 👉", res.data);
+        console.log("ADMIN AUTH RESPONSE 👉", res.data);
 
         if (!res.data?.user || res.data.user.role !== "admin") {
+          console.log("API auth failed or not admin, redirecting to login");
+          // Clear invalid auth data
+          localStorage.removeItem("token");
+          localStorage.removeItem("role");
+          window.dispatchEvent(
+            new CustomEvent("auth-change", { detail: { type: "logout" } }),
+          );
           router.replace("/auth/login");
         }
       } catch (err) {
-        console.error("AUTH ERROR 👉", err);
+        console.error("ADMIN AUTH ERROR 👉", err);
+        // Clear auth data on error
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        window.dispatchEvent(
+          new CustomEvent("auth-change", { detail: { type: "logout" } }),
+        );
         router.replace("/auth/login");
       } finally {
         setLoading(false);
       }
     };
 
-    checkAuth();
+    // Small delay to ensure auth state is settled
+    const timer = setTimeout(checkAuth, 100);
+    return () => clearTimeout(timer);
   }, []);
   if (loading) {
     return (

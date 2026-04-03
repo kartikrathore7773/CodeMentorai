@@ -30,6 +30,20 @@ export default function LoginPage() {
 
   // Check if already authenticated
   useEffect(() => {
+    // Skip auth check if force logout is requested
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("force_logout") === "true") {
+      // Clear all auth data
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      window.dispatchEvent(
+        new CustomEvent("auth-change", { detail: { type: "logout" } }),
+      );
+      // Remove the query param and reload
+      window.history.replaceState({}, "", "/auth/login");
+      return;
+    }
+
     const checkAuth = async () => {
       try {
         const res = await api.get("/api/auth/me");
@@ -233,12 +247,22 @@ export default function LoginPage() {
                 </Label>
               </div>
 
-              <a
-                href="/auth/forgot-password"
-                className="text-indigo-500 hover:underline font-medium"
-              >
-                Forgot password?
-              </a>
+              <div className="flex flex-col items-end gap-1">
+                <a
+                  href="/auth/forgot-password"
+                  className="text-indigo-500 hover:underline font-medium"
+                >
+                  Forgot password?
+                </a>
+                <button
+                  onClick={() =>
+                    (window.location.href = "/auth/login?force_logout=true")
+                  }
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-xs hover:underline"
+                >
+                  Force logout
+                </button>
+              </div>
             </div>
 
             {/* CTA */}
