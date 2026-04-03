@@ -14,6 +14,8 @@ export default function LoginPage() {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
 
+  console.log("LoginPage component rendered");
+
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -26,68 +28,76 @@ export default function LoginPage() {
   );
   const [showVerifyMessage, setShowVerifyMessage] = useState(false);
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    console.log("Setting mounted to true");
+    setMounted(true);
+  }, []);
 
   // Check if already authenticated
   useEffect(() => {
-    // Skip auth check if force logout is requested
+    console.log("Login page useEffect triggered");
+
     const urlParams = new URLSearchParams(window.location.search);
+
+    // Skip auth check if force logout is requested
     if (urlParams.get("force_logout") === "true") {
-      // Clear all auth data
+      console.log("Force logout requested");
       localStorage.removeItem("token");
       localStorage.removeItem("role");
       window.dispatchEvent(
         new CustomEvent("auth-change", { detail: { type: "logout" } }),
       );
-      // Remove the query param and reload
       window.history.replaceState({}, "", "/auth/login");
       return;
     }
 
     // Skip auth check if force login is requested
     if (urlParams.get("force_login") === "true") {
-      console.log(
-        "Force login requested, clearing auth data and staying on login page",
-      );
+      console.log("Force login requested, clearing auth data");
       localStorage.removeItem("token");
       localStorage.removeItem("role");
       window.dispatchEvent(
         new CustomEvent("auth-change", { detail: { type: "logout" } }),
       );
-      // Remove the query param
       window.history.replaceState({}, "", "/auth/login");
       return;
     }
 
+    // If no special parameters, still check for stale data but don't redirect immediately
     const checkAuth = async () => {
       try {
-        // Check if we have a token in localStorage
         const token = localStorage.getItem("token");
-        if (!token) {
-          console.log("No token in localStorage, staying on login page");
+        const role = localStorage.getItem("role");
+
+        console.log("Checking auth - Token:", !!token, "Role:", role);
+
+        if (!token || !role) {
+          console.log("No valid auth data found, user can login");
           return;
         }
 
-        console.log("Found token, checking auth with API...");
+        console.log("Validating existing auth with API...");
         const res = await api.get("/auth/me");
-        console.log("Auth check response:", res.data);
+        console.log("Auth validation result:", res.data);
 
         if (res.data.success && res.data.user) {
-          const role = res.data.user.role;
-          console.log("User is authenticated with role:", role);
-          if (role === "admin") {
+          const userRole = res.data.user.role;
+          console.log(
+            "User is already authenticated, redirecting to:",
+            userRole === "admin" ? "/admin" : "/",
+          );
+          if (userRole === "admin") {
             router.push("/admin");
           } else {
             router.push("/");
           }
         } else {
-          console.log("Auth check failed, clearing token");
+          console.log("Auth validation failed, clearing stale data");
           localStorage.removeItem("token");
           localStorage.removeItem("role");
         }
       } catch (err) {
-        console.log("Auth check error:", err);
-        // Clear invalid tokens
+        console.log("Auth check error, clearing any stale data:", err);
         localStorage.removeItem("token");
         localStorage.removeItem("role");
       }
@@ -95,7 +105,10 @@ export default function LoginPage() {
 
     // Only check auth if component is mounted
     if (mounted) {
-      checkAuth();
+      // Add a small delay to ensure DOM is ready
+      setTimeout(() => {
+        checkAuth();
+      }, 100);
     }
   }, [router, mounted]);
 
