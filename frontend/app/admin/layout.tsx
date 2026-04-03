@@ -45,32 +45,30 @@ export default function AdminLayout({
         }
       } catch (err) {
         console.error("ADMIN AUTH ERROR 👉", err);
-        // Clear auth data on error
-        localStorage.removeItem("token");
-        localStorage.removeItem("role");
-        window.dispatchEvent(
-          new CustomEvent("auth-change", { detail: { type: "logout" } }),
-        );
-        router.replace("/auth/login");
-      }
-    };
-
-    checkAuth();
-  }, [router]);
-        router.replace("/auth/login");
-      } finally {
-        setLoading(false);
+        // On error, delay redirect to prevent rapid redirects
+        setTimeout(() => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("role");
+          window.dispatchEvent(
+            new CustomEvent("auth-change", { detail: { type: "logout" } }),
+          );
+          router.replace("/auth/login");
+        }, 1000);
       }
     };
 
     // Small delay to ensure auth state is settled
     const timer = setTimeout(checkAuth, 100);
     return () => clearTimeout(timer);
-  }, []);
+  }, [router]);
+
   if (loading) {
     return (
-      <div className="h-screen flex items-center justify-center">
-        Checking admin access...
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading admin panel...</p>
+        </div>
       </div>
     );
   }
