@@ -5,30 +5,34 @@ import { useRouter } from "next/navigation";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import api from "@/lib/api";
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
- useEffect(() => {
-  const checkAuth = async () => {
-    try {
-      const res = await api.get("/auth/me");
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await api.get("/api/auth/me");
 
-      console.log("AUTH RESPONSE 👉", res.data);
+        console.log("AUTH RESPONSE 👉", res.data);
 
-      if (!res.data?.user || res.data.user.role !== "admin") {
+        if (!res.data?.user || res.data.user.role !== "admin") {
+          router.replace("/auth/login");
+        }
+      } catch (err) {
+        console.error("AUTH ERROR 👉", err);
         router.replace("/auth/login");
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error("AUTH ERROR 👉", err);
-      router.replace("/auth/login");
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
-  checkAuth();
-}, []);
+    checkAuth();
+  }, []);
   if (loading) {
     return (
       <div className="h-screen flex items-center justify-center">

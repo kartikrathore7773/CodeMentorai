@@ -3,7 +3,7 @@ export async function apiFetch(path: string, opts: RequestInit = {}) {
   const base = baseUrlRaw.replace(/\/$/, "");
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
-    ...(opts.headers || {}),
+    ...((opts.headers as Record<string, string>) || {}),
   };
 
   // Add token if available

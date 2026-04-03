@@ -34,7 +34,7 @@ export default function SignupPage() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await api.get("/auth/me");
+        const res = await api.get("/api/auth/me");
         if (res.data.success) {
           const role = res.data.user.role;
           if (role === "admin") {
