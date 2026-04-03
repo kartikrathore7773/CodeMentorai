@@ -146,7 +146,9 @@ export default function AdminSidebar() {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
     // Dispatch custom event to notify other components of logout
-    window.dispatchEvent(new CustomEvent("auth-change"));
+    window.dispatchEvent(
+      new CustomEvent("auth-change", { detail: { type: "logout" } }),
+    );
     window.location.href = "/auth/login";
   };
 

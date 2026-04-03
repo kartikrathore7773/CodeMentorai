@@ -71,7 +71,9 @@ export default function LoginPage() {
         localStorage.setItem("role", user.role);
 
         // Dispatch custom event to notify other components of login
-        window.dispatchEvent(new CustomEvent("auth-change"));
+        window.dispatchEvent(
+          new CustomEvent("auth-change", { detail: { type: "login" } }),
+        );
 
         toast.success("Welcome back to CodeMentor AI 🚀");
 
@@ -152,7 +154,11 @@ export default function LoginPage() {
                       localStorage.setItem("role", response.data.user.role);
 
                       // Dispatch custom event to notify other components of login
-                      window.dispatchEvent(new CustomEvent("auth-change"));
+                      window.dispatchEvent(
+                        new CustomEvent("auth-change", {
+                          detail: { type: "login" },
+                        }),
+                      );
 
                       toast.success("Logged in with Google 🚀");
                       const role = response.data.user?.role;

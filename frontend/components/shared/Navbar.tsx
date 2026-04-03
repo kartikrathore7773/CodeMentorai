@@ -196,7 +196,11 @@ export default function AppNavbar() {
                           }
 
                           // Dispatch custom event to notify other components of logout
-                          window.dispatchEvent(new CustomEvent("auth-change"));
+                          window.dispatchEvent(
+                            new CustomEvent("auth-change", {
+                              detail: { type: "logout" },
+                            }),
+                          );
 
                           // Redirect to login
                           window.location.href = "/auth/login";

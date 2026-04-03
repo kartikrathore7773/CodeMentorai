@@ -7,6 +7,15 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   const fetchUser = async () => {
+    // Check if token exists in localStorage first
+    const token =
+      typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    if (!token) {
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+
     try {
       const res = await apiGet("/api/auth/me");
       if (!res.ok) {
@@ -22,17 +31,31 @@ export function useAuth() {
     }
   };
 
+  const clearUser = () => {
+    setUser(null);
+    setLoading(false);
+  };
+
   useEffect(() => {
     fetchUser();
 
     // Listen for auth changes
-    const handleAuthChange = () => {
-      fetchUser();
+    const handleAuthChange = (event: CustomEvent) => {
+      // If it's a logout event, immediately clear user
+      if (event.detail?.type === "logout") {
+        clearUser();
+      } else {
+        // For login or other auth changes, refetch user data
+        fetchUser();
+      }
     };
 
-    window.addEventListener("auth-change", handleAuthChange);
+    window.addEventListener("auth-change", handleAuthChange as EventListener);
     return () => {
-      window.removeEventListener("auth-change", handleAuthChange);
+      window.removeEventListener(
+        "auth-change",
+        handleAuthChange as EventListener,
+      );
     };
   }, []);
 
