@@ -46,21 +46,43 @@ export default function LoginPage() {
 
     const checkAuth = async () => {
       try {
+        // Check if we have a token in localStorage
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.log("No token in localStorage, staying on login page");
+          return;
+        }
+
+        console.log("Found token, checking auth with API...");
         const res = await api.get("/auth/me");
-        if (res.data.success) {
+        console.log("Auth check response:", res.data);
+
+        if (res.data.success && res.data.user) {
           const role = res.data.user.role;
+          console.log("User is authenticated with role:", role);
           if (role === "admin") {
             router.push("/admin");
           } else {
             router.push("/");
           }
+        } else {
+          console.log("Auth check failed, clearing token");
+          localStorage.removeItem("token");
+          localStorage.removeItem("role");
         }
       } catch (err) {
-        // Not authenticated, stay on login page
+        console.log("Auth check error:", err);
+        // Clear invalid tokens
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
       }
     };
-    checkAuth();
-  }, [router]);
+
+    // Only check auth if component is mounted
+    if (mounted) {
+      checkAuth();
+    }
+  }, [router, mounted]);
 
   const submit = async () => {
     if (!form.email || !form.password) {

@@ -26,9 +26,9 @@ export default function AdminLayout({
           return;
         }
 
+        console.log("Checking admin auth with API...");
         const res = await api.get("/auth/me");
-
-        console.log("ADMIN AUTH RESPONSE 👉", res.data);
+        console.log("Admin auth response:", res.data);
 
         if (!res.data?.user || res.data.user.role !== "admin") {
           console.log("API auth failed or not admin, redirecting to login");
@@ -39,6 +39,9 @@ export default function AdminLayout({
             new CustomEvent("auth-change", { detail: { type: "logout" } }),
           );
           router.replace("/auth/login");
+        } else {
+          console.log("Admin auth successful");
+          setLoading(false);
         }
       } catch (err) {
         console.error("ADMIN AUTH ERROR 👉", err);
@@ -48,6 +51,12 @@ export default function AdminLayout({
         window.dispatchEvent(
           new CustomEvent("auth-change", { detail: { type: "logout" } }),
         );
+        router.replace("/auth/login");
+      }
+    };
+
+    checkAuth();
+  }, [router]);
         router.replace("/auth/login");
       } finally {
         setLoading(false);
