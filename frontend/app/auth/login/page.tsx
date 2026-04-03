@@ -44,6 +44,21 @@ export default function LoginPage() {
       return;
     }
 
+    // Skip auth check if force login is requested
+    if (urlParams.get("force_login") === "true") {
+      console.log(
+        "Force login requested, clearing auth data and staying on login page",
+      );
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      window.dispatchEvent(
+        new CustomEvent("auth-change", { detail: { type: "logout" } }),
+      );
+      // Remove the query param
+      window.history.replaceState({}, "", "/auth/login");
+      return;
+    }
+
     const checkAuth = async () => {
       try {
         // Check if we have a token in localStorage
@@ -317,15 +332,28 @@ export default function LoginPage() {
             )}
 
             {/* FOOTER */}
-            <p className="mt-5 text-center text-xs sm:text-sm text-gray-500 dark:text-gray-300">
-              New to CodeMentor AI?{" "}
-              <a
-                href="/auth/signup"
-                className="text-indigo-500 font-medium hover:underline"
-              >
-                Create an account
-              </a>
-            </p>
+            <div className="mt-5 space-y-2">
+              <p className="text-center text-xs text-gray-500 dark:text-gray-400">
+                Want to login as a different user?{" "}
+                <button
+                  onClick={() => {
+                    window.location.href = "/auth/login?force_login=true";
+                  }}
+                  className="text-indigo-500 hover:underline font-medium text-xs"
+                >
+                  Force Login
+                </button>
+              </p>
+              <p className="text-center text-xs sm:text-sm text-gray-500 dark:text-gray-300">
+                New to CodeMentor AI?{" "}
+                <a
+                  href="/auth/signup"
+                  className="text-indigo-500 font-medium hover:underline"
+                >
+                  Create an account
+                </a>
+              </p>
+            </div>
           </div>
         </motion.div>
       </div>
