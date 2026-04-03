@@ -25,6 +25,8 @@ export default function AppNavbar() {
   const { user, loading } = useAuth();
   const role = user?.role;
 
+  console.log("Navbar: user =", user, "loading =", loading, "role =", role);
+
   const [accountOpen, setAccountOpen] = useState(false);
   const accountRef = useRef<HTMLDivElement>(null);
 
