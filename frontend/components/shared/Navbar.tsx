@@ -181,17 +181,29 @@ export default function AppNavbar() {
                     <button
                       onClick={async () => {
                         try {
-                          await api.post("/api/auth/logout");
-
+                          // Clear local storage first
                           localStorage.removeItem("token");
                           localStorage.removeItem("role");
+
+                          // Try to call logout API (don't fail if it doesn't work)
+                          try {
+                            await api.post("/api/auth/logout");
+                          } catch (apiErr) {
+                            console.warn(
+                              "Logout API call failed, but proceeding with local logout:",
+                              apiErr,
+                            );
+                          }
 
                           // Dispatch custom event to notify other components of logout
                           window.dispatchEvent(new CustomEvent("auth-change"));
 
+                          // Redirect to login
                           window.location.href = "/auth/login";
                         } catch (err) {
                           console.error("Logout failed", err);
+                          // Even if logout fails, redirect to login
+                          window.location.href = "/auth/login";
                         }
                       }}
                       style={{
