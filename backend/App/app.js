@@ -44,6 +44,7 @@ app.use(
       "http://localhost:3000",
       "http://localhost:3001",
       "https://codementorai-six.vercel.app",
+      "https://www.kartikrathore.me"
     ],
     credentials: true,
   }),
